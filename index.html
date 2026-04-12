@@ -1,1 +1,511 @@
-WINDS
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>It Has Been Days</title>
+
+    <link
+      rel="preload"
+      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap"
+      as="style"
+      onload="
+        this.onload = null;
+        this.rel = 'stylesheet';
+      "
+    />
+    <noscript
+      ><link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap"
+    /></noscript>
+
+    <style>
+      :root {
+        --bg-color: #101010;
+        --text-main: #efefef;
+        --text-muted: #888;
+        --accent-color: #a3c7e0;
+        --border-color: #222;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg-color);
+        color: var(--text-main);
+        font-family: "Libre Baskerville", Georgia, serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .wrapper {
+        max-width: 720px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+
+      /* THE H0 WATERMARK */
+      .h0 {
+        font-size: clamp(48px, 10vw, 84px); /* Scales down gracefully on mobile */
+        color: #a3c7e0;
+        font-style: italic;
+        font-weight: bold;
+        letter-spacing: -2px;
+        margin-bottom: 20px;
+        line-height: 1;
+        user-select: none; /* Prevents text highlighting */
+      }
+
+      .h0 del {
+        text-decoration-color: #fff; /* Slightly brighter strike for contrast */
+        text-decoration-thickness: 9px;
+      }
+
+      /* HEADERS & TERMINAL CURSOR */
+      h1 {
+        font-size: 32px;
+        letter-spacing: 1.5px;
+        margin-bottom: 6px;
+        line-height: 1.5;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .cursor-blink {
+        animation: blink 1s step-end infinite;
+        color: var(--accent-color);
+      }
+
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+      }
+
+      h2 {
+        font-size: 18px;
+        color: var(--accent-color);
+        margin-bottom: 25px;
+        font-weight: normal;
+        font-style: italic;
+      }
+
+      /* GUILT TRIP */
+      .guilt-trip {
+        font-size: 13px;
+        color: #666;
+        font-style: italic;
+        margin-top: 10px;
+        margin-bottom: 40px;
+      }
+
+      /* PROGRESS BARS */
+      .progress-section {
+        margin: 45px 0;
+        padding: 20px;
+        border: 1px solid var(--border-color);
+        background: #141414;
+      }
+
+      .progress-label {
+        font-size: 13px;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .progress-bar-wrap {
+        width: 100%;
+        height: 6px;
+        background: #1a1a1a;
+        margin-bottom: 20px;
+        border-radius: 3px;
+        overflow: hidden;
+      }
+
+      .progress-bar {
+        height: 100%;
+        transition: width 1s ease-in-out;
+      }
+
+      .bar-past {
+        background: #444;
+      }
+      .bar-present {
+        background: var(--accent-color);
+      }
+
+      /* POSTS & BLOG */
+      .post {
+        margin-bottom: 55px;
+      }
+
+      .date {
+        font-size: 13px;
+        color: #999;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .title {
+        font-size: 26px;
+        margin-bottom: 12px;
+      }
+
+      .content {
+        font-size: 18px;
+        line-height: 1.85;
+        color: #e6e6e6;
+      }
+
+      .not-a-blog-meta {
+        margin-top: 15px;
+        font-size: 14px;
+        color: #777;
+        font-style: italic;
+      }
+
+      /* BOOKS */
+      .book {
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 10px;
+      }
+
+      .book-title {
+        font-size: 18px;
+      }
+
+      .book-meta {
+        font-size: 13px;
+        color: #aaa;
+        text-align: right;
+      }
+
+      /* DIVIDER */
+      .divider {
+        height: 1px;
+        background: #2a2a2a;
+        margin: 45px 0;
+      }
+
+      /* SHARE */
+      .share {
+        font-size: 14px;
+        color: #aaa;
+        margin-top: 40px;
+        margin-bottom: 80px;
+        cursor: pointer;
+        text-align: center;
+        transition: color 0.2s ease;
+      }
+
+      .share:hover {
+        color: #fff;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <div class="h0"><del>not</del> a blog</div>
+
+      <h1 id="mainHeader"></h1>
+      <h2 id="altTime"></h2>
+
+      <div id="guiltTrip" class="guilt-trip"></div>
+
+      <div class="progress-section">
+        <div class="progress-label">
+          <span>Book 1 to Book 5 combined</span>
+          <span id="pastDaysCount" style="font-variant-numeric: tabular-nums"></span>
+        </div>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar bar-past" id="barPast" style="width: 0%"></div>
+        </div>
+
+        <div class="progress-label">
+          <span>Book 5 to Now</span>
+          <span id="presentDaysCount" style="font-variant-numeric: tabular-nums; color: var(--accent-color)"></span>
+        </div>
+        <div class="progress-bar-wrap" style="margin-bottom: 0">
+          <div class="progress-bar bar-present" id="barPresent" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <div class="post">
+        <div id="todayDate" class="date"></div>
+        <div class="title">Words are wind.</div>
+
+        <div class="content">
+          <p>
+            At some point, this stopped being about a release date. It became a geological epoch. A background process running
+            in the back of your mind, consuming memory for a decade.
+          </p>
+
+          <p>
+            Some of us started waiting as sweet summer children. Now we have mortgages, gray hair, and children of our own who
+            also aren't reading <i>The Winds of Winter</i>.
+          </p>
+
+          <p>
+            You check the blogs not because you expect an announcement, but because you’ve been checking since the Obama
+            administration. The sun sets, the sun rises. The Giants lose.
+          </p>
+
+          <p>The book is still not here.</p>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div id="blog"></div>
+
+      <div class="divider"></div>
+
+      <div class="title" style="font-size: 20px; margin-bottom: 20px">The Long Night</div>
+      <div id="books"></div>
+
+      <div class="share" onclick="copyLink()">[ Copy link to send to someone who said “it’ll be out this year” ]</div>
+    </div>
+
+    <script>
+      // Midnight UTC on release day for exact tracking
+      const firstBook = new Date("1996-08-06T00:00:00Z");
+      const lastBook = new Date("2011-07-12T00:00:00Z");
+
+      /* LIVE COUNTER & TERMINAL CURSOR */
+      function updateTimer() {
+        const now = new Date();
+        const diff = now - lastBook;
+
+        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const m = Math.floor((diff / 1000 / 60) % 60);
+        const s = Math.floor((diff / 1000) % 60);
+
+        const pad = (num) => num.toString().padStart(2, "0");
+
+        // Using innerHTML with <br> tags for that brutalist vertical stack
+        document.getElementById("mainHeader").innerHTML =
+          `IT HAS BEEN <br>${d} DAYS, <br>${pad(h)} HOURS, <br>${pad(m)} MINUTES, <br>${pad(s)} SECONDS<span class="cursor-blink">_</span>`;
+      }
+
+      // Initialize layout, local storage, and progress bars
+      function initStaticContent() {
+        const now = new Date();
+
+        // 1. Time distortion text
+        const currentDaysWait = Math.floor((now - lastBook) / (1000 * 60 * 60 * 24));
+        const years = Math.floor(currentDaysWait / 365.25);
+        document.getElementById("todayDate").innerText = now.toDateString();
+
+        const modes = [
+          `Roughly ${years} years.`,
+          "Long enough to raise a child.",
+          "Longer than the entire run of the HBO adaptation.",
+          "A different lifetime entirely.",
+          "Winter never came.",
+        ];
+        document.getElementById("altTime").innerText = modes[Math.floor(Math.random() * modes.length)];
+
+        // 2. LocalStorage Guilt Trip with Tiers
+        let visitCount = parseInt(localStorage.getItem("twow_wait_visits") || 0);
+        visitCount++;
+        localStorage.setItem("twow_wait_visits", visitCount);
+
+        const guiltEl = document.getElementById("guiltTrip");
+        let guiltPool = [];
+
+        if (visitCount === 1) {
+          guiltPool = [
+            "Welcome to the watch. It does not end.",
+            "First time? We were all so hopeful once.",
+            "You are here for the first time. The ink remains dry.",
+          ];
+        } else if (visitCount <= 5) {
+          guiltPool = [
+            `You have checked this page ${visitCount} times. Nothing has changed.`,
+            `Refreshing the page does not forge new pages. (${visitCount} visits)`,
+            `Checking again won't make him write faster. (${visitCount} visits)`,
+          ];
+        } else if (visitCount <= 15) {
+          guiltPool = [
+            `${visitCount} visits. The definition of insanity.`,
+            `You've returned ${visitCount} times. Have you considered reading Joe Abercrombie instead?`,
+            `Hope is a dangerous thing. You've brought it here ${visitCount} times.`,
+            `Do you think he knows you've checked this ${visitCount} times?`,
+          ];
+        } else if (visitCount <= 50) {
+          guiltPool = [
+            `${visitCount} visits. This is becoming a sickness.`,
+            `You have checked ${visitCount} times. The sun rises, the sun sets. The book is not out.`,
+            `Are you okay? You've stared at this tracker ${visitCount} times.`,
+            `Maybe on the ${visitCount + 1}th visit, it will be done. (It won't).`,
+          ];
+        } else {
+          guiltPool = [
+            `Over ${visitCount} visits. You are a ghost haunting an empty server.`,
+            `Valar Morghulis. But first, we wait. (${visitCount} times and counting).`,
+            `You have checked ${visitCount} times. Just let it go.`,
+            `This is your ${visitCount}th visit. The long night is truly upon you.`,
+            `${visitCount} times. We are bound to this purgatory together.`,
+          ];
+        }
+
+        guiltEl.innerText = guiltPool[Math.floor(Math.random() * guiltPool.length)];
+
+        // 3. Progress Bar Math
+        const pastDaysWait = Math.floor((lastBook - firstBook) / (1000 * 60 * 60 * 24));
+        const maxWait = Math.max(pastDaysWait, currentDaysWait);
+
+        const pastWidth = (pastDaysWait / maxWait) * 100;
+        const presentWidth = (currentDaysWait / maxWait) * 100;
+
+        const relativePercent = ((currentDaysWait / pastDaysWait) * 100).toFixed(2);
+
+        document.getElementById("pastDaysCount").innerText = `${pastDaysWait} days (100%)`;
+        document.getElementById("presentDaysCount").innerText = `${currentDaysWait} days (${relativePercent}%)`;
+
+        // Slight timeout to allow CSS transition to animate on load
+        setTimeout(() => {
+          document.getElementById("barPast").style.width = `${pastWidth}%`;
+          document.getElementById("barPresent").style.width = `${presentWidth}%`;
+        }, 100);
+      }
+
+      // Start intervals
+      initStaticContent();
+      updateTimer();
+      setInterval(updateTimer, 1000);
+
+      /* BLOG WRITING (GRRM / FAN HYBRID) */
+      const lines = [
+        {
+          title: "On the Son of Kong",
+          body: [
+            "The Meereenese knot was a child's tangle compared to the son of Kong.",
+            "I am writing. Sometimes a page a week. Sometimes I delete three. The woods are lovely, dark and deep.",
+            "But I have miles to go before I sleep.",
+          ],
+          mood: "Melancholy",
+          music: "The Grateful Dead",
+        },
+        {
+          title: "Wild Cards and Jets",
+          body: [
+            "Another Wild Cards anthology is coming. I know that is not what you want to hear.",
+            "The Jets broke my heart again on Sunday. The offensive line is in shambles.",
+            "I wrote a paragraph for Tyrion today. It is something.",
+          ],
+          mood: "Defeated",
+          music: "Bruce Springsteen",
+        },
+        {
+          title: "The Show is Not the Books",
+          body: [
+            "We thought the show ending would free us. It only left a void.",
+            "The ink is dry on the television scripts, but the pages remain blank on the desk.",
+            "The ending will be different. If we ever see it.",
+          ],
+          mood: "Cynical",
+          music: "Sound of Silence",
+        },
+        {
+          title: "A Matter of Time",
+          body: [
+            "Look at the wait between Storm of Swords and Feast for Crows.",
+            "We thought five years was an eternity. We were so young then. So incredibly foolish.",
+            "Now, a five-year wait sounds like a miracle.",
+          ],
+          mood: "Nostalgic",
+          music: "Pink Floyd",
+        },
+      ];
+
+      function rand(arr) {
+        return arr[Math.floor(Math.random() * arr.length)];
+      }
+
+      const blog = document.getElementById("blog");
+
+      for (let i = 0; i < 3; i++) {
+        const div = document.createElement("div");
+        div.className = "post";
+        const post = rand(lines);
+        const daysAgo = Math.floor(Math.random() * 4000) + 100;
+
+        div.innerHTML = `
+    <div class="date">${daysAgo} days ago</div>
+    <div class="title">${post.title}</div>
+    <div class="content">
+      <p>${post.body[0]}</p>
+      <p>${post.body[1]}</p>
+      <p><i>${post.body[2]}</i></p>
+      <div class="not-a-blog-meta">
+        Current Mood: ${post.mood}<br>
+        Current Music: ${post.music}
+      </div>
+    </div>
+  `;
+        blog.appendChild(div);
+      }
+
+      /* BOOKS */
+      function daysSince(date) {
+        return Math.floor((new Date() - new Date(date)) / (1000 * 60 * 60 * 24));
+      }
+
+      const books = [
+        ["A Game of Thrones", "1996-08-06"],
+        ["A Clash of Kings", "1998-11-16"],
+        ["A Storm of Swords", "2000-08-08"],
+        ["A Feast for Crows", "2005-10-17"],
+        ["A Dance with Dragons", "2011-07-12"],
+      ];
+
+      const bookContainer = document.getElementById("books");
+
+      books.forEach((b) => {
+        const div = document.createElement("div");
+        div.className = "book";
+        div.innerHTML = `
+    <div class="book-title">${b[0]}</div>
+    <div class="book-meta">
+      ${new Date(b[1]).getFullYear()}<br>
+      ${daysSince(b[1])} days ago
+    </div>
+  `;
+        bookContainer.appendChild(div);
+      });
+
+      /* SHARE */
+      function copyLink() {
+        navigator.clipboard.writeText(window.location.href);
+        const btn = document.querySelector(".share");
+        btn.innerText = "[ Link Copied to Clipboard ]";
+        setTimeout(() => {
+          btn.innerText = "[ Copy link to send to someone who said “it’ll be out this year” ]";
+        }, 2000);
+      }
+
+      /* RARE EVENT */
+      if (Math.random() < 0.001) {
+        document.body.innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:serif;font-size:32px;letter-spacing:2px;color:#fff;">
+      THE WINDS OF WINTER IS OUT.
+    </div>
+  `;
+      }
+    </script>
+  </body>
+</html>
